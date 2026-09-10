@@ -133,18 +133,6 @@
     color: var(--ink-soft);
   }
 
-  .platform-tag {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    padding: 0.15rem 0.5rem;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    color: var(--ink-soft);
-    margin-right: 0.4rem;
-    margin-bottom: 0.6rem;
-  }
-
   code.inline {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.88em;
@@ -371,8 +359,7 @@
   <section>
     <div class="section-label mono">BEFORE YOU START</div>
     <h2>What you're actually installing</h2>
-    <p>C++ code doesn't run on its own — it has to be <strong>compiled</strong> first, meaning translated into instructions your machine's processor can actually execute. So you need two things: a place to write code (VS Code), and a compiler to translate it (this part differs by operating system).</p>
-    <p>Figure out which OS you're on below, and only follow that column. Don't install both.</p>
+    <p>C++ code doesn't run on its own — it has to be <strong>compiled</strong> first, meaning translated into instructions your machine's processor can actually execute. So you need two things: a place to write code (VS Code), and a compiler to translate it. These steps are for Windows.</p>
   </section>
 
   <section>
@@ -390,7 +377,6 @@
     <div class="section-label mono">STEP 2</div>
     <h2>Install a compiler</h2>
 
-    <span class="platform-tag mono">WINDOWS</span>
     <div class="step">
       <div class="step-num mono">a</div>
       <div class="step-body">
@@ -414,30 +400,6 @@
           <pre>C:\msys64\ucrt64\bin</pre>
         </div>
         <p>Search "Edit the system environment variables" in the Start menu → Environment Variables → find <code class="inline">Path</code> under your user variables → Edit → New → paste the folder above.</p>
-      </div>
-    </div>
-
-    <span class="platform-tag mono">MACOS</span>
-    <div class="step">
-      <div class="step-num mono">a</div>
-      <div class="step-body">
-        <p>Open Terminal (Spotlight → type "Terminal") and run:</p>
-        <div class="codeblock">
-          <pre>xcode-select --install</pre>
-        </div>
-        <p>This installs Apple's Command Line Tools, which includes a C++ compiler (clang). Click "Install" in the popup that appears and wait for it to finish.</p>
-      </div>
-    </div>
-
-    <span class="platform-tag mono">LINUX</span>
-    <div class="step">
-      <div class="step-num mono">a</div>
-      <div class="step-body">
-        <p>Open a terminal and run (Ubuntu/Debian-based):</p>
-        <div class="codeblock">
-          <pre>sudo apt update && sudo apt install build-essential</pre>
-        </div>
-        <p>This pulls in GCC and everything else needed to compile C++.</p>
       </div>
     </div>
 
@@ -475,12 +437,12 @@
     <div class="trouble">
       <div class="trouble-title mono">IF SOMETHING'S NOT WORKING</div>
       <div class="trouble-item">
-        <div class="problem">"g++ is not recognized" (Windows)</div>
+        <div class="problem">"g++ is not recognized"</div>
         <div class="fix">The PATH wasn't updated correctly, or VS Code was open before you changed it. Close VS Code completely and reopen it — PATH changes only apply to new terminal windows.</div>
       </div>
       <div class="trouble-item">
-        <div class="problem">"xcrun: error" (macOS)</div>
-        <div class="fix">Command Line Tools didn't finish installing. Re-run <code class="inline">xcode-select --install</code> and wait for the popup to complete before continuing.</div>
+        <div class="problem">"pacman: command not found" inside MSYS2</div>
+        <div class="fix">You opened the wrong terminal. Make sure you launched "MSYS2 UCRT64" specifically from the Start menu, not "MSYS2 MSYS" or a regular Command Prompt.</div>
       </div>
       <div class="trouble-item">
         <div class="problem">Nothing happens when you click "Run"</div>
@@ -522,10 +484,10 @@
       <div class="step-body">
         <p>Save the file, then in the VS Code terminal, run:</p>
         <div class="codeblock">
-          <pre>g++ hello.cpp -o hello
-./hello</pre>
+          <pre>g++ hello.cpp -o hello.exe
+.\hello.exe</pre>
         </div>
-        <p>On Windows, the second line is <code class="inline">.\hello.exe</code> instead. You should see <code class="inline">Hello, World!</code> printed in the terminal.</p>
+        <p>You should see <code class="inline">Hello, World!</code> printed in the terminal.</p>
       </div>
     </div>
   </section>

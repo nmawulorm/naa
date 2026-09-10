@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 0 — What Is Software, Really?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #14181f;
+    --ink-soft: #3a4150;
+    --paper: #f2ede2;
+    --paper-dim: #e7e0d0;
+    --line: #cfc6ad;
+    --amber: #b5772f;
+    --amber-dim: #d9a86c;
+    --green-thread: #556b4f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  header {
+    padding: 5rem 1.5rem 2.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    max-width: 15ch;
+  }
+
+  .sub {
+    margin-top: 1.4rem;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 50ch;
+  }
+
+  main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+
+  section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  section:first-child { border-top: none; padding-top: 1rem; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    margin-bottom: 1.2rem;
+    max-width: 22ch;
+  }
+
+  p {
+    font-size: 1.02rem;
+    color: var(--ink);
+    margin-bottom: 1.1rem;
+    max-width: 62ch;
+  }
+
+  p.lede {
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+  }
+
+  strong { font-weight: 600; color: var(--ink); }
+
+  /* fun fact */
+  .fact {
+    margin: 1.6rem 0;
+    padding: 1.1rem 1.3rem;
+    background: var(--paper-dim);
+    border-left: 2px solid var(--amber);
+    max-width: 58ch;
+  }
+
+  .fact-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .fact p {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* Q&A */
+  .qa {
+    margin-bottom: 2.2rem;
+    max-width: 62ch;
+  }
+
+  .qa:last-child { margin-bottom: 0; }
+
+  .q {
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.7rem;
+  }
+
+  .q .marker {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--amber);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .a {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    padding-left: 1.9rem;
+    border-left: 2px solid var(--line);
+    margin-left: 0.1rem;
+  }
+
+  /* assignment */
+  .assignment {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.6rem 2.2rem;
+    margin-top: 1rem;
+  }
+
+  .assignment .section-label { color: var(--amber-dim); }
+
+  .assignment h2 { color: var(--paper); }
+
+  .assignment p {
+    color: #cdd2da;
+  }
+
+  .task-list {
+    list-style: none;
+    margin: 1.4rem 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .task-list li {
+    font-size: 0.98rem;
+    color: var(--paper);
+    padding-left: 1.6rem;
+    position: relative;
+  }
+
+  .task-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 14px;
+    height: 1px;
+    background: var(--amber-dim);
+  }
+
+  .task-list .sub-note {
+    display: block;
+    font-size: 0.85rem;
+    color: #9aa2b0;
+    margin-top: 0.2rem;
+  }
+
+  .no-code {
+    margin-top: 1.6rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid #3a4150;
+    font-size: 0.88rem;
+    color: #9aa2b0;
+    font-style: italic;
+  }
+
+  footer {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 3.5rem 1.25rem 2rem; }
+    .assignment { padding: 2rem 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker mono">LESSON 0 — BEFORE THE FIRST LINE OF CODE</div>
+  <h1>What is software, really?</h1>
+  <p class="sub">Before you write a single "Hello, World," it helps to know what you're actually stepping into — and why it's more interesting than it looks from the outside.</p>
+</header>
+
+<main>
+
+  <section>
+    <div class="section-label mono">THE IDEA</div>
+    <h2>A list of instructions, taken very seriously</h2>
+    <p class="lede">At its core, software is nothing more than a list of instructions for a machine that has no imagination, no guessing, and no patience for ambiguity.</p>
+    <p>When you build a website, you're already writing instructions — "put this text here, make this button blue, do this when clicked." Software development is the same idea, stretched further: instructions for handling money, flying planes, matching people on dating apps, or running the servers this very page is stored on.</p>
+    <p>What makes it hard isn't the individual instructions — those are simple. What makes it hard is <strong>organizing thousands of them so a human can still understand what's going on</strong> a year later. That's the entire craft. Not "can you make the computer do the thing," but "can you make the computer do the thing in a way that doesn't collapse when it grows."</p>
+
+    <div class="fact">
+      <span class="fact-label mono">FUN FACT</span>
+      <p>The word "bug" for a software error predates software. In 1947, engineers at Harvard found an actual moth stuck in a relay of the Mark II computer, jamming it. They taped it into the logbook. It's in the Smithsonian today.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">WHY IT'S HARD</div>
+    <h2>The computer isn't the problem. You are.</h2>
+    <p>A computer will do exactly what you tell it, every single time, without complaint. That sounds easy — until you realize it means every bug is your fault. Not the machine's. Yours.</p>
+    <p>Most of software development is really about managing <strong>complexity</strong> — the way small, simple pieces combine into something too big to hold in your head all at once. A single "if" statement is trivial. A hundred of them, tangled together, talking to a database, waiting on a network, handling a user who clicks the wrong button at the wrong time — that's where real skill lives.</p>
+    <p>This is why concepts like design principles and architecture exist. They're not academic decoration. They're survival tools — techniques experienced developers built after getting burned by their own messes, so the next person (often themselves, six months later) doesn't drown in it.</p>
+
+    <div class="fact">
+      <span class="fact-label mono">FUN FACT</span>
+      <p>The first computer "programmer" is widely considered to be Ada Lovelace, who in 1843 wrote an algorithm for a machine that was never actually built in her lifetime — the Analytical Engine. She was writing software before there was hardware to run it on.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">A GLIMPSE AHEAD</div>
+    <h2>Why "good" code is a design choice, not an accident</h2>
+    <p>Two developers can solve the exact same problem and produce code that behaves identically — yet one version is easy to change next month, and the other quietly punishes anyone who touches it. The difference usually isn't cleverness. It's whether the code was shaped with a few simple ideas in mind: <strong>keep related things together, keep unrelated things apart, and don't repeat yourself if you can help it.</strong></p>
+    <p>You'll meet these ideas properly later — things like separation of concerns, or the "single responsibility" idea, where each piece of code should really only have one job. For now, just notice the pattern: good software design is less about being smart, and more about being <strong>kind to your future self.</strong></p>
+
+    <div class="fact">
+      <span class="fact-label mono">FUN FACT</span>
+      <p>NASA's coding standards for the Space Shuttle's flight software were so strict that the team went years at a stretch without a single bug reaching production — a level of discipline that came entirely from process and design principles, not raw talent.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">CHECK YOURSELF</div>
+    <h2>A few questions to sit with</h2>
+
+    <div class="qa">
+      <div class="q"><span class="marker mono">Q1</span> If a computer only does exactly what it's told, where do bugs actually come from?</div>
+      <div class="a">From the gap between what you meant and what you actually told it. The machine isn't wrong — your instructions were incomplete, or handled a case you didn't think of.</div>
+    </div>
+
+    <div class="qa">
+      <div class="q"><span class="marker mono">Q2</span> Why would a project need "design principles" at all — isn't working code enough?</div>
+      <div class="a">Working code today doesn't guarantee working code after ten more features get bolted on. Design principles exist to keep code changeable, not just functional — because almost all software keeps growing after it "works."</div>
+    </div>
+
+    <div class="qa">
+      <div class="q"><span class="marker mono">Q3</span> What's the real skill in software development — writing code, or something else?</div>
+      <div class="a">Managing complexity. Writing a line of code is easy. Organizing thousands of lines so they stay understandable, months later, by you or someone else, is the actual craft.</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="assignment">
+  <div class="section-label mono">YOUR FIRST ASSIGNMENT</div>
+  <h2>No code yet. Just noticing.</h2>
+  <p>Before Hello World, spend 15–20 minutes doing this — pen and paper, or a notes app, whatever's easiest.</p>
+
+  <ul class="task-list">
+    <li>
+      Pick one app you use daily (banking app, WhatsApp, a game — anything).
+      <span class="sub-note">Something you didn't build and don't know the inner workings of.</span>
+    </li>
+    <li>
+      Write down 5 things it does that feel simple to you as a user, but probably require several "instructions" behind the scenes.
+      <span class="sub-note">Example: "shows me my new messages instantly" — that's actually the app checking a server, comparing data, and updating your screen, likely many times a minute.</span>
+    </li>
+    <li>
+      For just one of those 5, guess (don't research) what could go wrong if the instructions were written carelessly.
+      <span class="sub-note">What's the "bug" that might happen? What would the user see?</span>
+    </li>
+  </ul>
+
+  <div class="no-code">There's no code to write here — the goal is just to start noticing that every smooth experience you use is hiding a pile of careful instructions underneath. That instinct is worth more, early on, than syntax.</div>
+</div>
+
+<footer>
+  <span class="mono">NEXT —</span> <a href="lesson-1.html" style="color: var(--ink); text-decoration: underline; text-decoration-color: var(--amber); text-underline-offset: 3px;">Lesson 1: Hello, World in C++</a>. The first instruction you'll write yourself.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 — Setting Up C++ &amp; Hello, World</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #14181f;
+    --ink-soft: #3a4150;
+    --paper: #f2ede2;
+    --paper-dim: #e7e0d0;
+    --line: #cfc6ad;
+    --amber: #b5772f;
+    --amber-dim: #d9a86c;
+    --green-thread: #556b4f;
+    --code-bg: #1c2027;
+    --code-text: #e7e0d0;
+    --code-comment: #8a9199;
+    --code-string: #c98a4b;
+    --code-keyword: #7fa8c9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  header {
+    padding: 5rem 1.5rem 2.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    max-width: 16ch;
+  }
+
+  .sub {
+    margin-top: 1.4rem;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 50ch;
+  }
+
+  main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+
+  section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  section:first-child { border-top: none; padding-top: 1rem; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    margin-bottom: 1.2rem;
+    max-width: 24ch;
+  }
+
+  p {
+    font-size: 1.02rem;
+    color: var(--ink);
+    margin-bottom: 1.1rem;
+    max-width: 62ch;
+  }
+
+  strong { font-weight: 600; color: var(--ink); }
+
+  a { color: var(--amber); }
+
+  /* step numbering — this content IS a real sequence, so numbers are earned */
+  .step {
+    display: flex;
+    gap: 1.3rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .step:last-child { margin-bottom: 0; }
+
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--amber);
+    flex-shrink: 0;
+    width: 1.6rem;
+    padding-top: 0.25rem;
+  }
+
+  .step-body { flex: 1; min-width: 0; }
+
+  .step-title {
+    font-size: 1.12rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .step-body p {
+    font-size: 0.97rem;
+    color: var(--ink-soft);
+  }
+
+  .platform-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink-soft);
+    margin-right: 0.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  code.inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: var(--paper-dim);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+
+  /* code blocks */
+  .codeblock {
+    background: var(--code-bg);
+    border-radius: 4px;
+    margin: 1rem 0 1.4rem;
+    overflow-x: auto;
+  }
+
+  .codeblock-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--code-comment);
+    padding: 0.7rem 1.1rem 0;
+  }
+
+  .codeblock pre {
+    padding: 0.6rem 1.1rem 1.1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--code-text);
+    white-space: pre;
+  }
+
+  .cm { color: var(--code-comment); }
+  .kw { color: var(--code-keyword); }
+  .st { color: var(--code-string); }
+
+  /* fun fact */
+  .fact {
+    margin: 1.6rem 0;
+    padding: 1.1rem 1.3rem;
+    background: var(--paper-dim);
+    border-left: 2px solid var(--amber);
+    max-width: 58ch;
+  }
+
+  .fact-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .fact p {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* troubleshoot */
+  .trouble {
+    margin-top: 1.6rem;
+    padding: 1.2rem 1.3rem;
+    border: 1px solid var(--line);
+    max-width: 62ch;
+  }
+
+  .trouble-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.9rem;
+  }
+
+  .trouble-item {
+    margin-bottom: 0.9rem;
+  }
+
+  .trouble-item:last-child { margin-bottom: 0; }
+
+  .trouble-item .problem {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .trouble-item .fix {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  /* line-by-line breakdown */
+  .breakdown {
+    display: grid;
+    gap: 0.9rem;
+    margin: 1.4rem 0;
+  }
+
+  .breakdown-row {
+    display: grid;
+    grid-template-columns: minmax(140px, auto) 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .breakdown-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .breakdown-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--ink);
+    background: var(--paper-dim);
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .breakdown-desc {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+
+  /* checklist for verification */
+  .checklist {
+    list-style: none;
+    display: grid;
+    gap: 0.6rem;
+    margin: 1.2rem 0;
+  }
+
+  .checklist li {
+    font-size: 0.95rem;
+    padding-left: 1.6rem;
+    position: relative;
+    color: var(--ink);
+  }
+
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--ink-soft);
+    border-radius: 3px;
+  }
+
+  /* assignment */
+  .assignment {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.6rem 2.2rem;
+    margin-top: 1rem;
+  }
+
+  .assignment .section-label { color: var(--amber-dim); }
+  .assignment h2 { color: var(--paper); }
+  .assignment p { color: #cdd2da; }
+
+  .task-list {
+    list-style: none;
+    margin: 1.4rem 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .task-list li {
+    font-size: 0.98rem;
+    color: var(--paper);
+    padding-left: 1.6rem;
+    position: relative;
+  }
+
+  .task-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 14px;
+    height: 1px;
+    background: var(--amber-dim);
+  }
+
+  .task-list .sub-note {
+    display: block;
+    font-size: 0.85rem;
+    color: #9aa2b0;
+    margin-top: 0.2rem;
+  }
+
+  .assignment .codeblock { background: #0f1216; }
+
+  footer {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 3.5rem 1.25rem 2rem; }
+    .assignment { padding: 2rem 1.4rem; }
+    .step { gap: 0.9rem; }
+    .breakdown-row { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker mono">LESSON 1 — YOUR FIRST INSTRUCTION</div>
+  <h1>Setting up C++ &amp; Hello, World</h1>
+  <p class="sub">A working setup and one real program you wrote yourself. Nothing fancy — just proof the machine is listening.</p>
+</header>
+
+<main>
+
+  <section>
+    <div class="section-label mono">BEFORE YOU START</div>
+    <h2>What you're actually installing</h2>
+    <p>C++ code doesn't run on its own — it has to be <strong>compiled</strong> first, meaning translated into instructions your machine's processor can actually execute. So you need two things: a place to write code (VS Code), and a compiler to translate it (this part differs by operating system).</p>
+    <p>Figure out which OS you're on below, and only follow that column. Don't install both.</p>
+  </section>
+
+  <section>
+    <div class="section-label mono">STEP 1</div>
+    <h2>Install VS Code</h2>
+    <div class="step">
+      <div class="step-num mono">→</div>
+      <div class="step-body">
+        <p>Go to <a href="https://code.visualstudio.com" target="_blank" rel="noopener">code.visualstudio.com</a> and download the installer for your system. Run it, accept the defaults — nothing unusual here.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">STEP 2</div>
+    <h2>Install a compiler</h2>
+
+    <span class="platform-tag mono">WINDOWS</span>
+    <div class="step">
+      <div class="step-num mono">a</div>
+      <div class="step-body">
+        <p>Install <strong>MSYS2</strong> from <a href="https://www.msys2.org" target="_blank" rel="noopener">msys2.org</a> — it's the easiest way to get a real GCC compiler on Windows. Run the installer with defaults.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num mono">b</div>
+      <div class="step-body">
+        <p>Open "MSYS2 UCRT64" from your Start menu (not a regular terminal) and run:</p>
+        <div class="codeblock">
+          <pre>pacman -S mingw-w64-ucrt-x86_64-gcc</pre>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num mono">c</div>
+      <div class="step-body">
+        <p>Add the compiler to your system PATH so VS Code can find it. The folder to add is usually:</p>
+        <div class="codeblock">
+          <pre>C:\msys64\ucrt64\bin</pre>
+        </div>
+        <p>Search "Edit the system environment variables" in the Start menu → Environment Variables → find <code class="inline">Path</code> under your user variables → Edit → New → paste the folder above.</p>
+      </div>
+    </div>
+
+    <span class="platform-tag mono">MACOS</span>
+    <div class="step">
+      <div class="step-num mono">a</div>
+      <div class="step-body">
+        <p>Open Terminal (Spotlight → type "Terminal") and run:</p>
+        <div class="codeblock">
+          <pre>xcode-select --install</pre>
+        </div>
+        <p>This installs Apple's Command Line Tools, which includes a C++ compiler (clang). Click "Install" in the popup that appears and wait for it to finish.</p>
+      </div>
+    </div>
+
+    <span class="platform-tag mono">LINUX</span>
+    <div class="step">
+      <div class="step-num mono">a</div>
+      <div class="step-body">
+        <p>Open a terminal and run (Ubuntu/Debian-based):</p>
+        <div class="codeblock">
+          <pre>sudo apt update && sudo apt install build-essential</pre>
+        </div>
+        <p>This pulls in GCC and everything else needed to compile C++.</p>
+      </div>
+    </div>
+
+    <div class="fact">
+      <span class="fact-label mono">FUN FACT</span>
+      <p>The C++ compiler doesn't just translate your code once — it goes through several stages (preprocessing, compiling, assembling, linking) before producing a runnable file. Every time you hit "run," all of that happens again in a fraction of a second.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">STEP 3</div>
+    <h2>Add the C++ extension in VS Code</h2>
+    <div class="step">
+      <div class="step-num mono">a</div>
+      <div class="step-body">
+        <p>Open VS Code. Click the Extensions icon in the left sidebar (looks like four squares), search for <strong>"C/C++"</strong> (published by Microsoft), and click Install.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">STEP 4</div>
+    <h2>Verify the compiler is actually found</h2>
+    <div class="step">
+      <div class="step-num mono">a</div>
+      <div class="step-body">
+        <p>Open a terminal inside VS Code: <code class="inline">Terminal → New Terminal</code> from the top menu. Run:</p>
+        <div class="codeblock">
+          <pre>g++ --version</pre>
+        </div>
+        <p>You should see a version number printed back. If you see "command not found" instead, the compiler isn't on your PATH yet — see the troubleshooting box below.</p>
+      </div>
+    </div>
+
+    <div class="trouble">
+      <div class="trouble-title mono">IF SOMETHING'S NOT WORKING</div>
+      <div class="trouble-item">
+        <div class="problem">"g++ is not recognized" (Windows)</div>
+        <div class="fix">The PATH wasn't updated correctly, or VS Code was open before you changed it. Close VS Code completely and reopen it — PATH changes only apply to new terminal windows.</div>
+      </div>
+      <div class="trouble-item">
+        <div class="problem">"xcrun: error" (macOS)</div>
+        <div class="fix">Command Line Tools didn't finish installing. Re-run <code class="inline">xcode-select --install</code> and wait for the popup to complete before continuing.</div>
+      </div>
+      <div class="trouble-item">
+        <div class="problem">Nothing happens when you click "Run"</div>
+        <div class="fix">Make sure your file is saved with a <code class="inline">.cpp</code> extension first — VS Code needs that to know what it's running.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">STEP 5</div>
+    <h2>Write your first program</h2>
+    <div class="step">
+      <div class="step-num mono">a</div>
+      <div class="step-body">
+        <p>Create a new folder anywhere you'll remember (e.g. <code class="inline">cpp-lessons</code>), open it in VS Code via <code class="inline">File → Open Folder</code>, then create a new file named exactly:</p>
+        <div class="codeblock">
+          <pre>hello.cpp</pre>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num mono">b</div>
+      <div class="step-body">
+        <p>Type this in — typing it yourself (not pasting) is worth it the first time:</p>
+        <div class="codeblock">
+          <div class="codeblock-label mono">hello.cpp</div>
+          <pre><span class="cm">// hello.cpp — my first C++ program</span>
+<span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    std::cout &lt;&lt; <span class="st">"Hello, World!"</span> &lt;&lt; std::endl;
+    <span class="kw">return</span> 0;
+}</pre>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num mono">c</div>
+      <div class="step-body">
+        <p>Save the file, then in the VS Code terminal, run:</p>
+        <div class="codeblock">
+          <pre>g++ hello.cpp -o hello
+./hello</pre>
+        </div>
+        <p>On Windows, the second line is <code class="inline">.\hello.exe</code> instead. You should see <code class="inline">Hello, World!</code> printed in the terminal.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label mono">WHAT YOU JUST WROTE</div>
+    <h2>Breaking it down, line by line</h2>
+    <p>You don't need to memorize any of this yet — just get a feel for what each piece is doing.</p>
+
+    <div class="breakdown">
+      <div class="breakdown-row">
+        <div class="breakdown-code mono">// comment</div>
+        <div class="breakdown-desc">A note to humans. The compiler ignores anything after <code class="inline">//</code> — it's purely for people reading the code later, including future you.</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-code mono">#include &lt;iostream&gt;</div>
+        <div class="breakdown-desc">Pulls in a chunk of pre-written code that lets you print things to the screen. You're borrowing tools someone else already built, rather than reinventing them.</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-code mono">int main() { }</div>
+        <div class="breakdown-desc">Every C++ program needs exactly one <code class="inline">main</code> — it's the entry point. When you run the program, this is where execution starts.</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-code mono">std::cout &lt;&lt;</div>
+        <div class="breakdown-desc">"Send this to the screen." The <code class="inline">&lt;&lt;</code> arrows point the text toward the output.</div>
+      </div>
+      <div class="breakdown-row">
+        <div class="breakdown-code mono">return 0;</div>
+        <div class="breakdown-desc">Tells the operating system the program finished without errors. <code class="inline">0</code> means "all good" — it's a convention you'll see everywhere.</div>
+      </div>
+    </div>
+
+    <div class="fact">
+      <span class="fact-label mono">FUN FACT</span>
+      <p>"Hello, World" as a first program dates back to a 1972 internal memo at Bell Labs, and was popularized by Brian Kernighan's 1978 book on the C language. It's been the traditional first program in nearly every language since — including this one.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="assignment">
+  <div class="section-label mono">YOUR ASSIGNMENT</div>
+  <h2>Make it say something else</h2>
+  <p>Confirm your setup actually works end to end — then push past copy-paste.</p>
+
+  <ul class="task-list">
+    <li>
+      Verify: run <code class="inline" style="background:#2a2f38; color:#e7e0d0;">g++ --version</code> and confirm a version number prints — don't skip this.
+    </li>
+    <li>
+      Get <code class="inline" style="background:#2a2f38; color:#e7e0d0;">hello.cpp</code> running exactly as shown, and actually see "Hello, World!" in your terminal.
+    </li>
+    <li>
+      Change the message to print your own name instead — e.g. <code class="inline" style="background:#2a2f38; color:#e7e0d0;">"Hello, Naa!"</code> — and re-run it.
+      <span class="sub-note">Re-run means: save the file, then repeat both terminal commands. The compiler has no idea you changed anything until you compile again.</span>
+    </li>
+    <li>
+      Add a second line that prints something else entirely — a fact about yourself, today's date typed manually, anything.
+      <span class="sub-note">Hint: you'll need a second <code style="color:#d9a86c;">std::cout &lt;&lt; ... &lt;&lt; std::endl;</code> line, right below the first, inside the same <code style="color:#d9a86c;">main()</code>.</span>
+    </li>
+  </ul>
+
+  <div class="codeblock">
+    <div class="codeblock-label mono">EXPECTED SHAPE (fill in your own text)</div>
+    <pre><span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    std::cout &lt;&lt; <span class="st">"..."</span> &lt;&lt; std::endl;
+    std::cout &lt;&lt; <span class="st">"..."</span> &lt;&lt; std::endl;
+    <span class="kw">return</span> 0;
+}</pre>
+  </div>
+</div>
+
+<footer>
+  <span class="mono">NEXT —</span> Lesson 2: variables, and giving the computer something to remember.
+</footer>
+
+</body>
+</html>

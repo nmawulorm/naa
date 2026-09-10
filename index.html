@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From the Ground Up — A Systems Roadmap</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #14181f;
+    --ink-soft: #3a4150;
+    --paper: #fffefd;
+    --paper-dim: #e7e0d0;
+    --line: #cfc6ad;
+    --amber: #b5772f;
+    --amber-dim: #d9a86c;
+    --green-thread: #556b4f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  header {
+    padding: 5rem 1.5rem 3rem;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--amber);
+    letter-spacing: 0.02em;
+    margin-bottom: 1.25rem;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+  }
+
+  .sub {
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+  }
+
+  .stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    margin-top: 0.15rem;
+  }
+
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+    position: relative;
+  }
+
+  .spine {
+    position: absolute;
+    left: 1.5rem;
+    top: 0.5rem;
+    bottom: 6rem;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .phase {
+    position: relative;
+    padding: 0 0 0 3.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase-marker {
+    position: absolute;
+    left: 1.5rem;
+    top: 0.4rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    transform: translateX(-50%);
+  }
+
+  .phase.active .phase-marker {
+    background: var(--amber);
+    border-color: var(--amber);
+  }
+
+  .phase-block {
+    border-top: 1px solid var(--line);
+    padding: 2.75rem 0 2.75rem;
+  }
+
+  .phase:first-child .phase-block { border-top: none; padding-top: 0.2rem; }
+
+  .phase-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+  }
+
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--amber);
+  }
+
+  .phase-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    margin-left: auto;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+
+  .phase-goal {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    max-width: 56ch;
+    margin-bottom: 1.4rem;
+  }
+
+  .items {
+    list-style: none;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .items li {
+    font-size: 0.94rem;
+    padding-left: 1.15rem;
+    position: relative;
+    color: var(--ink);
+  }
+
+  .items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    background: var(--green-thread);
+    border-radius: 50%;
+  }
+
+  .callout {
+    margin-top: 1.4rem;
+    padding: 1rem 1.2rem;
+    background: var(--paper-dim);
+    border-left: 2px solid var(--amber);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    max-width: 58ch;
+  }
+
+  .callout strong { color: var(--ink); font-weight: 600; }
+
+  .lang-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink-soft);
+    margin-right: 0.4rem;
+  }
+
+  footer {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  footer .mono { color: var(--ink-soft); }
+
+  @media (max-width: 600px) {
+    .spine { left: 1.1rem; }
+    .phase { padding-left: 2.6rem; }
+    .phase-marker { left: 1.1rem; }
+    header { padding: 3.5rem 1.25rem 2rem; }
+    .stats { gap: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker mono">A SELF-DIRECTED CURRICULUM</div>
+  <h1>From the ground up</h1>
+  <p class="sub">A roadmap for building real understanding of how computers and software actually work — not just how to make a webpage do things, but why the things underneath it behave the way they do.</p>
+
+  <div class="stats">
+    <div>
+      <div class="stat-num mono">4</div>
+      <div class="stat-label mono">PHASES</div>
+    </div>
+    <div>
+      <div class="stat-num mono">~16</div>
+      <div class="stat-label mono">WEEKS</div>
+    </div>
+    <div>
+      <div class="stat-num mono">5–10</div>
+      <div class="stat-label mono">HRS / WEEK</div>
+    </div>
+    <div>
+      <div class="stat-num mono">2</div>
+      <div class="stat-label mono">LANGUAGES</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="spine"></div>
+
+  <div class="phase active">
+    <div class="phase-marker"></div>
+    <div class="phase-block">
+      <div class="phase-head">
+        <span class="phase-num mono">PHASE 0</span>
+        <h2>Logic foundations</h2>
+        <span class="phase-when mono">WEEKS 1–2</span>
+      </div>
+      <p class="phase-goal">Make loops, conditionals, and functions second nature before syntax gets in the way. <span class="lang-tag">PYTHON</span></p>
+      <ul class="items">
+        <li>Variables, data types, operators</li>
+        <li>if / else, switch-style branching</li>
+        <li>for / while loops — and when to choose which</li>
+        <li>Functions: parameters, return values, scope</li>
+        <li>Arrays and lists, basic manipulation</li>
+        <li>20–30 small logic drills, building past FizzBuzz-level</li>
+      </ul>
+      <div class="callout">Python here, on purpose — even though it's "for projects" later. The goal is separating <strong>learning to think in logic</strong> from <strong>learning C++'s strict syntax</strong>, so you don't get stuck on semicolons instead of ideas.</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker"></div>
+    <div class="phase-block">
+      <div class="phase-head">
+        <span class="phase-num mono">PHASE 1</span>
+        <h2>C++ &amp; how computers work</h2>
+        <span class="phase-when mono">WEEKS 3–8</span>
+      </div>
+      <p class="phase-goal">The part web development usually hides from you — what's actually happening underneath. <span class="lang-tag">C++</span></p>
+      <ul class="items">
+        <li>Syntax and the compilation process — what a compiler does</li>
+        <li>Memory: stack vs. heap, pointers, references</li>
+        <li>Data structures built from scratch: arrays, linked lists, stacks, queues, hash maps, trees</li>
+        <li>Core algorithms: searching, sorting, recursion</li>
+        <li>Big-O notation — felt, not just memorized</li>
+      </ul>
+      <div class="callout">Checkpoint: you should be able to explain <strong>why</strong> inserting at the front of an array is O(n) but a linked list insert is O(1) — and actually feel the difference, not just recite it.</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker"></div>
+    <div class="phase-block">
+      <div class="phase-head">
+        <span class="phase-num mono">PHASE 2</span>
+        <h2>Software design &amp; architecture</h2>
+        <span class="phase-when mono">WEEKS 9–12</span>
+      </div>
+      <p class="phase-goal">Now that you understand what's happening underneath, learn to organize code well on top of it.</p>
+      <ul class="items">
+        <li>OOP done properly: encapsulation, inheritance, polymorphism, composition over inheritance</li>
+        <li>SOLID principles</li>
+        <li>Design patterns you'll actually use: Factory, Singleton, Observer, Strategy</li>
+        <li>Basic system design: client/server, database, API, caching — how the pieces fit</li>
+      </ul>
+      <div class="callout">This is where your existing web skills reconnect to the theory — you'll recognize pieces of systems you've already touched.</div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker"></div>
+    <div class="phase-block">
+      <div class="phase-head">
+        <span class="phase-num mono">PHASE 3</span>
+        <h2>Build real projects</h2>
+        <span class="phase-when mono">WEEKS 13–16+</span>
+      </div>
+      <p class="phase-goal">Apply everything, increasing in scope. <span class="lang-tag">PYTHON</span></p>
+      <ul class="items">
+        <li>CLI tool (e.g. a task manager) — clean structure, no framework crutches</li>
+        <li>Small API backend with a database — real architecture decisions</li>
+        <li>A larger project combining backend + web skills + good design — your proof point for "robust small system"</li>
+      </ul>
+      <div class="callout">This phase doesn't have a hard end date — treat weeks 13–16 as the start of an ongoing practice, not a finish line.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="mono">NOTE —</span> This is a living plan. Adjust pace against the 5–10 hrs/week budget as life allows; the order of phases matters more than the exact week count.
+</footer>
+
+</body>
+</html>
